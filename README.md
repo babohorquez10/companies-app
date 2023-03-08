@@ -1,1 +1,3 @@
 # companies-app
+
+First commit.
