@@ -9,7 +9,7 @@ const { userAuth } = require('../middleware/auth');
 
 router.post('/register', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, userType } = req.body;
 
     if (!email || !password) {
       return res.status(500).json({ error: 'Missing data.' });
@@ -26,7 +26,7 @@ router.post('/register', async (req, res) => {
     const user = await User.query().insert({
       email,
       password: encryptedPassword,
-      userType: 'USER',
+      userType: userType || 'USER',
       token,
     });
 
