@@ -14,10 +14,12 @@ const verifyToken = async (req, res, next, userType) => {
 
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-    const user = await User.query().findOne({
-      email: decoded.email,
-      userType,
-    });
+
+    const query = { email: decoded.email };
+
+    if (userType) query.userType = userType;
+
+    const user = await User.query().findOne(query);
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid token.' });
@@ -31,7 +33,7 @@ const verifyToken = async (req, res, next, userType) => {
   return next();
 };
 
-const userAuth = (req, res, next) => verifyToken(req, res, next, 'USER');
+const userAuth = (req, res, next) => verifyToken(req, res, next);
 const adminAuth = (req, res, next) => verifyToken(req, res, next, 'ADMIN');
 
 module.exports = {

@@ -7,7 +7,7 @@ const Company = require('../models/Company');
 
 router.get('/', userAuth, async (req, res) => {
   try {
-    const companies = await Company.query();
+    const companies = await Company.query().orderBy('nit');
 
     return res.json(companies);
   } catch (err) {

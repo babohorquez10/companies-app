@@ -61,7 +61,7 @@ function Login() {
                   />
                 </Form.Group>
                 <AppButton loading={user.loadingLogin} type="submit">
-                  Submit
+                  Login
                 </AppButton>
               </Form>
             </LoginForm>

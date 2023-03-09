@@ -6,7 +6,7 @@ const Inventory = require('../models/Inventory');
 
 router.get('/', userAuth, async (req, res) => {
   try {
-    const articles = await Inventory.query();
+    const articles = await Inventory.query().orderBy('articleName');
 
     return res.json(articles);
   } catch (err) {

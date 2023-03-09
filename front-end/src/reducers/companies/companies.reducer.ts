@@ -1,15 +1,27 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Company } from '../../models/interfaces/company.interface';
-import { fetchCompaniesData } from './companies.actions';
+import {
+  deleteCompany,
+  fetchCompaniesData,
+  postCompany,
+  setSuccessMessage,
+  updateCompany,
+} from './companies.actions';
 
 interface CompaniesState {
   companies: Company[];
   loadingCompanies: boolean;
+  submittingCompany: boolean;
+  error: string;
+  successMessage: string;
 }
 
 const initialState: CompaniesState = {
   companies: [],
   loadingCompanies: false,
+  submittingCompany: false,
+  error: '',
+  successMessage: '',
 };
 
 export const companiesReducer = createReducer(initialState, (builder: any) => {
@@ -19,9 +31,10 @@ export const companiesReducer = createReducer(initialState, (builder: any) => {
     loadingCompanies: true,
   }));
 
-  builder.addCase(fetchCompaniesData.rejected, (state: any) => ({
+  builder.addCase(fetchCompaniesData.rejected, (state: any, action: any) => ({
     ...state,
     companies: [],
+    error: action.payload,
     loadingCompanies: false,
   }));
 
@@ -29,5 +42,61 @@ export const companiesReducer = createReducer(initialState, (builder: any) => {
     ...state,
     companies: action.payload,
     loadingCompanies: false,
+  }));
+
+  builder.addCase(postCompany.pending, (state: any) => ({
+    ...state,
+    submittingCompany: true,
+  }));
+
+  builder.addCase(postCompany.rejected, (state: any, action: any) => ({
+    ...state,
+    submittingCompany: false,
+    error: action.payload,
+  }));
+
+  builder.addCase(postCompany.fulfilled, (state: any, action: any) => ({
+    ...state,
+    submittingCompany: false,
+    successMessage: 'Company created.',
+  }));
+
+  builder.addCase(updateCompany.pending, (state: any) => ({
+    ...state,
+    submittingCompany: true,
+  }));
+
+  builder.addCase(updateCompany.rejected, (state: any, action: any) => ({
+    ...state,
+    submittingCompany: false,
+    error: action.payload,
+  }));
+
+  builder.addCase(updateCompany.fulfilled, (state: any, action: any) => ({
+    ...state,
+    submittingCompany: false,
+    successMessage: 'Company updated.',
+  }));
+
+  builder.addCase(deleteCompany.pending, (state: any) => ({
+    ...state,
+    submittingCompany: true,
+  }));
+
+  builder.addCase(deleteCompany.rejected, (state: any, action: any) => ({
+    ...state,
+    submittingCompany: false,
+    error: action.payload,
+  }));
+
+  builder.addCase(deleteCompany.fulfilled, (state: any, action: any) => ({
+    ...state,
+    submittingCompany: false,
+    successMessage: 'Company deleted.',
+  }));
+
+  builder.addCase(setSuccessMessage, (state: any, action: any) => ({
+    ...state,
+    successMessage: action.payload,
   }));
 });
