@@ -22,5 +22,7 @@ export const deleteCompany = createAsyncThunk(
 );
 
 export const setSuccessMessage = createAction<string>(
-  'company/setSuccessMessage'
+  'companies/setSuccessMessage'
 );
+
+export const setCompanyError = createAction<string>('companies/setError');

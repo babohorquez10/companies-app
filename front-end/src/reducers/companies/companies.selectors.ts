@@ -8,3 +8,5 @@ export const selectSubmittingCompany = (state: RootState) =>
 
 export const selectSubmitMessage = (state: RootState) =>
   state.companies.successMessage;
+
+export const selectCompanyError = (state: RootState) => state.companies.error;

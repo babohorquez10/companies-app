@@ -4,6 +4,7 @@ import {
   deleteInventory,
   fetchInventoryData,
   postInventory,
+  setInventoryError,
   setInventorySuccessMessage,
   updateInventory,
 } from './inventory.actions';
@@ -55,11 +56,19 @@ export const inventoryReducer = createReducer(initialState, (builder: any) => {
     error: action.payload,
   }));
 
-  builder.addCase(postInventory.fulfilled, (state: any, action: any) => ({
-    ...state,
-    submittingInventory: false,
-    successMessage: 'Inventory created.',
-  }));
+  builder.addCase(postInventory.fulfilled, (state: any, action: any) =>
+    action.payload.error
+      ? {
+          ...state,
+          submittingInventory: false,
+          error: action.payload.error?.nativeError?.detail || 'Error.',
+        }
+      : {
+          ...state,
+          submittingInventory: false,
+          successMessage: 'Inventory created.',
+        }
+  );
 
   builder.addCase(updateInventory.pending, (state: any) => ({
     ...state,
@@ -98,5 +107,10 @@ export const inventoryReducer = createReducer(initialState, (builder: any) => {
   builder.addCase(setInventorySuccessMessage, (state: any, action: any) => ({
     ...state,
     successMessage: action.payload,
+  }));
+
+  builder.addCase(setInventoryError, (state: any, action: any) => ({
+    ...state,
+    error: action.payload,
   }));
 });

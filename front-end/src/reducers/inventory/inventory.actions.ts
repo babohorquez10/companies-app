@@ -24,3 +24,5 @@ export const deleteInventory = createAsyncThunk(
 export const setInventorySuccessMessage = createAction<string>(
   'inventory/setInventorySuccessMessage'
 );
+
+export const setInventoryError = createAction<string>('inventory/setError');

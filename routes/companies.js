@@ -11,7 +11,7 @@ router.get('/', userAuth, async (req, res) => {
 
     return res.json(companies);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 
@@ -19,7 +19,7 @@ router.get('/inventory/:companyId', userAuth, async (req, res) => {
   const { companyId } = req.params;
 
   if (!companyId) {
-    return res.status(500).send('Data missing.');
+    return res.status(500).json({ error: 'Data missing.' });
   }
 
   try {
@@ -27,7 +27,7 @@ router.get('/inventory/:companyId', userAuth, async (req, res) => {
 
     return res.json(inventory);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 
@@ -36,7 +36,7 @@ router.post('/', adminAuth, async (req, res) => {
   const { nit, name, address, phone } = req.body;
 
   if (!nit || !name || !address || !phone) {
-    return res.status(500).send('Data missing.');
+    return res.status(500).json({ error: 'Data missing.' });
   }
 
   try {
@@ -49,35 +49,35 @@ router.post('/', adminAuth, async (req, res) => {
 
     return res.json(newCompany);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 
 router.put('/', adminAuth, async (req, res) => {
   const { nit, update } = req.body;
 
-  if (!nit || !update) return res.status(500).send('Data missing.');
+  if (!nit || !update) return res.status(500).json({ error: 'Data missing.' });
 
   try {
     const updatedCompany = await Company.query().findById(nit).patch(update);
 
     return res.json(updatedCompany);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 
 router.delete('/', adminAuth, async (req, res) => {
   const { nit } = req.body;
 
-  if (!nit) return res.status(500).send('Data missing.');
+  if (!nit) return res.status(500).json({ error: 'Data missing.' });
 
   try {
     const deletedCompany = await Company.query().deleteById(nit);
 
     return res.json(deletedCompany);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 

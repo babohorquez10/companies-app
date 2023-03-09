@@ -4,6 +4,7 @@ import {
   deleteCompany,
   fetchCompaniesData,
   postCompany,
+  setCompanyError,
   setSuccessMessage,
   updateCompany,
 } from './companies.actions';
@@ -55,11 +56,19 @@ export const companiesReducer = createReducer(initialState, (builder: any) => {
     error: action.payload,
   }));
 
-  builder.addCase(postCompany.fulfilled, (state: any, action: any) => ({
-    ...state,
-    submittingCompany: false,
-    successMessage: 'Company created.',
-  }));
+  builder.addCase(postCompany.fulfilled, (state: any, action: any) =>
+    action.payload.error
+      ? {
+          ...state,
+          submittingCompany: false,
+          error: action.payload.error?.nativeError?.detail || 'Error.',
+        }
+      : {
+          ...state,
+          submittingCompany: false,
+          successMessage: 'Company created.',
+        }
+  );
 
   builder.addCase(updateCompany.pending, (state: any) => ({
     ...state,
@@ -98,5 +107,10 @@ export const companiesReducer = createReducer(initialState, (builder: any) => {
   builder.addCase(setSuccessMessage, (state: any, action: any) => ({
     ...state,
     successMessage: action.payload,
+  }));
+
+  builder.addCase(setCompanyError, (state: any, action: any) => ({
+    ...state,
+    error: action.payload,
   }));
 });

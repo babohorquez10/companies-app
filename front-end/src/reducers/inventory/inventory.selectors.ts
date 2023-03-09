@@ -8,3 +8,5 @@ export const selectSubmittingInventory = (state: RootState) =>
 
 export const selectInventorySubmitMessage = (state: RootState) =>
   state.inventory.successMessage;
+
+export const selectInventoryError = (state: RootState) => state.inventory.error;

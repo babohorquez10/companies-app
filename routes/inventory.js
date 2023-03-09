@@ -10,7 +10,7 @@ router.get('/', userAuth, async (req, res) => {
 
     return res.json(articles);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 
@@ -19,7 +19,7 @@ router.post('/', adminAuth, async (req, res) => {
   const { articleName, companyId, quantity } = req.body;
 
   if (!articleName || !companyId || !quantity) {
-    return res.status(500).send('Data missing.');
+    return res.status(500).json({ error: 'Data missing.' });
   }
 
   try {
@@ -31,7 +31,7 @@ router.post('/', adminAuth, async (req, res) => {
 
     return res.json(newArticle);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 
@@ -39,7 +39,7 @@ router.put('/', adminAuth, async (req, res) => {
   const { articleName, companyId, update } = req.body;
 
   if (!articleName || !companyId || !update) {
-    return res.status(500).send('Data missing.');
+    return res.status(500).json({ error: 'Data missing.' });
   }
 
   try {
@@ -49,7 +49,7 @@ router.put('/', adminAuth, async (req, res) => {
 
     return res.json(updatedArticle);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 
@@ -57,7 +57,7 @@ router.delete('/', adminAuth, async (req, res) => {
   const { articleName, companyId } = req.body;
 
   if (!articleName || !companyId) {
-    return res.status(500).send('Data missing.');
+    return res.status(500).json({ error: 'Data missing.' });
   }
 
   try {
@@ -68,7 +68,7 @@ router.delete('/', adminAuth, async (req, res) => {
 
     return res.json(deletedArticle);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json({ error: err });
   }
 });
 

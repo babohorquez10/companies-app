@@ -6,10 +6,22 @@ import AppToast from './components/AppToast/AppToast';
 import AppSpinner from './components/Spinner/Spinner';
 import Login from './pages/Login/Login';
 import MainPage from './pages/MainPage/MainPage';
-import { setSuccessMessage } from './reducers/companies/companies.actions';
-import { selectSubmitMessage } from './reducers/companies/companies.selectors';
-import { setInventorySuccessMessage } from './reducers/inventory/inventory.actions';
-import { selectInventorySubmitMessage } from './reducers/inventory/inventory.selectors';
+import {
+  setCompanyError,
+  setSuccessMessage,
+} from './reducers/companies/companies.actions';
+import {
+  selectCompanyError,
+  selectSubmitMessage,
+} from './reducers/companies/companies.selectors';
+import {
+  setInventoryError,
+  setInventorySuccessMessage,
+} from './reducers/inventory/inventory.actions';
+import {
+  selectInventoryError,
+  selectInventorySubmitMessage,
+} from './reducers/inventory/inventory.selectors';
 import {
   setError,
   setLoading,
@@ -22,6 +34,8 @@ const App = () => {
   const user = useSelector(selectUser);
   const submitMessage = useSelector(selectSubmitMessage);
   const inventorySubmitMessage = useSelector(selectInventorySubmitMessage);
+  const companyError = useSelector(selectCompanyError);
+  const inventoryError = useSelector(selectInventoryError);
 
   useEffect(() => {
     if (user.token && user.authenticated) {
@@ -54,6 +68,28 @@ const App = () => {
   return (
     <AppContainer>
       {user.authenticated ? <MainPage /> : <Login />}
+      {inventoryError && (
+        <AppToast
+          show={!!inventoryError}
+          message={inventoryError}
+          title="Error"
+          variant="danger"
+          onDismiss={() => {
+            dispatch(setInventoryError(''));
+          }}
+        />
+      )}
+      {companyError && (
+        <AppToast
+          show={!!companyError}
+          message={companyError}
+          title="Error"
+          variant="danger"
+          onDismiss={() => {
+            dispatch(setCompanyError(''));
+          }}
+        />
+      )}
       {user.error && (
         <AppToast
           show={!!user.error}
