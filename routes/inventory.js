@@ -1,10 +1,10 @@
 const express = require('express');
 
 const router = express.Router();
-
+const { userAuth, adminAuth } = require('../middleware/auth');
 const Inventory = require('../models/Inventory');
 
-router.get('/', async (req, res) => {
+router.get('/', userAuth, async (req, res) => {
   try {
     const articles = await Inventory.query();
 
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', adminAuth, async (req, res) => {
   // eslint-disable-next-line object-curly-newline
   const { articleName, companyId, quantity } = req.body;
 
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', adminAuth, async (req, res) => {
   const { articleName, companyId, update } = req.body;
 
   if (!articleName || !companyId || !update) {
@@ -53,7 +53,7 @@ router.put('/', async (req, res) => {
   }
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/', adminAuth, async (req, res) => {
   const { articleName, companyId } = req.body;
 
   if (!articleName || !companyId) {

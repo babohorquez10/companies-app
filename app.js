@@ -6,6 +6,7 @@ const logger = require('morgan');
 
 const companiesRouter = require('./routes/companies');
 const inventoryRouter = require('./routes/inventory');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/users', usersRouter);
 app.use('/api/companies', companiesRouter);
 app.use('/api/inventory', inventoryRouter);
 

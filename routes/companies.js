@@ -1,10 +1,11 @@
 const express = require('express');
 
 const router = express.Router();
+const { userAuth, adminAuth } = require('../middleware/auth');
 
 const Company = require('../models/Company');
 
-router.get('/', async (req, res) => {
+router.get('/', userAuth, async (req, res) => {
   try {
     const companies = await Company.query();
 
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/inventory/:companyId', async (req, res) => {
+router.get('/inventory/:companyId', userAuth, async (req, res) => {
   const { companyId } = req.params;
 
   if (!companyId) {
@@ -30,7 +31,7 @@ router.get('/inventory/:companyId', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', adminAuth, async (req, res) => {
   // eslint-disable-next-line object-curly-newline
   const { nit, name, address, phone } = req.body;
 
@@ -52,7 +53,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', adminAuth, async (req, res) => {
   const { nit, update } = req.body;
 
   if (!nit || !update) return res.status(500).send('Data missing.');
@@ -66,7 +67,7 @@ router.put('/', async (req, res) => {
   }
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/', adminAuth, async (req, res) => {
   const { nit } = req.body;
 
   if (!nit) return res.status(500).send('Data missing.');
