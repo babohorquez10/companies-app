@@ -8,3 +8,5 @@ export const verifyToken = createAsyncThunk(
 );
 
 export const setLoading = createAction<boolean>('user/setLoading');
+export const setError = createAction<string>('user/setError');
+export const logOut = createAction('user/logOut');

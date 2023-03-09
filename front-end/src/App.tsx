@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
-import { Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { AppContainer, SpinnerContainer } from './App.styled';
+import { AppContainer } from './App.styled';
 import { useAppDispatch } from './app/hooks';
+import ErrorToast from './components/ErrorToast/ErrorToast';
+import AppSpinner from './components/Spinner/Spinner';
 import Login from './pages/Login/Login';
+import MainPage from './pages/MainPage/MainPage';
 import { setLoading, verifyToken } from './reducers/user/user.actions';
 import { selectUser } from './reducers/user/user.selectors';
 
@@ -34,16 +36,15 @@ const App = () => {
   if (user.loading) {
     return (
       <AppContainer>
-        <SpinnerContainer>
-          <Spinner variant="primary" animation="border" />
-        </SpinnerContainer>
+        <AppSpinner marginTop="45vh" />
       </AppContainer>
     );
   }
 
   return (
     <AppContainer>
-      {user.authenticated ? <div>Login!!!</div> : <Login />}
+      {user.authenticated ? <MainPage /> : <Login />}
+      {user.error && <ErrorToast show={!!user.error} error={user.error} />}
     </AppContainer>
   );
 };

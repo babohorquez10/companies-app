@@ -4,25 +4,30 @@ import { fetchCompaniesData } from './companies.actions';
 
 interface CompaniesState {
   companies: Company[];
+  loadingCompanies: boolean;
 }
 
 const initialState: CompaniesState = {
   companies: [],
+  loadingCompanies: false,
 };
 
 export const companiesReducer = createReducer(initialState, (builder: any) => {
   builder.addCase(fetchCompaniesData.pending, (state: any) => ({
     ...state,
     companies: [],
+    loadingCompanies: true,
   }));
 
   builder.addCase(fetchCompaniesData.rejected, (state: any) => ({
     ...state,
     companies: [],
+    loadingCompanies: false,
   }));
 
   builder.addCase(fetchCompaniesData.fulfilled, (state: any, action: any) => ({
     ...state,
     companies: action.payload,
+    loadingCompanies: false,
   }));
 });

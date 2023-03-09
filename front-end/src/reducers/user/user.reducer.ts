@@ -1,5 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { login, setLoading, verifyToken } from './user.actions';
+import {
+  login,
+  logOut,
+  setError,
+  setLoading,
+  verifyToken,
+} from './user.actions';
 
 interface UserState {
   email: string;
@@ -113,5 +119,21 @@ export const userReducer = createReducer(initialState, (builder: any) => {
   builder.addCase(setLoading, (state: any, action: any) => ({
     ...state,
     loading: action.payload,
+  }));
+
+  builder.addCase(setError, (state: any, action: any) => ({
+    ...state,
+    error: action.payload,
+  }));
+
+  builder.addCase(logOut, (state: any, action: any) => ({
+    ...state,
+    email: '',
+    userType: 'USER',
+    token: '',
+    authenticated: false,
+    error: '',
+    loadingLogin: false,
+    loading: false,
   }));
 });
