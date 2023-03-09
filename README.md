@@ -12,6 +12,7 @@ A PostgreSQL DB should be created in order to run the project correctly. An exam
 
 **Technologies I used:** Node, ExpressJS, Objection and Knex for DB connection, JWT and bcrypt for auth and password hashing.
 
+- Create `.env` file with env variables. The needed variables are shown in `.env.example`.
 - Run `npm install` on the root directory of the project.
 - Run `npm start`.
 - The backend will run in the `port 5000`.
