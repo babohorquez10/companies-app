@@ -4,10 +4,30 @@ const router = express.Router();
 
 const Company = require('../models/Company');
 
-router.get('/', (req, res) => {
-  Company.query().then((users) => {
-    res.json(users);
-  });
+router.get('/', async (req, res) => {
+  try {
+    const companies = await Company.query();
+
+    return res.json(companies);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
+router.get('/inventory/:companyId', async (req, res) => {
+  const { companyId } = req.params;
+
+  if (!companyId) {
+    return res.status(500).send('Data missing.');
+  }
+
+  try {
+    const inventory = await Company.relatedQuery('inventory').for(companyId);
+
+    return res.json(inventory);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 });
 
 router.post('/', async (req, res) => {
