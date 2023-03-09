@@ -7,7 +7,9 @@ const verifyToken = async (req, res, next, userType) => {
     req.body.token || req.query.token || req.headers['x-access-token'];
 
   if (!token) {
-    return res.status(403).send('Token required for authentication.');
+    return res
+      .status(403)
+      .json({ error: 'Token required for authentication.' });
   }
 
   try {
@@ -18,12 +20,12 @@ const verifyToken = async (req, res, next, userType) => {
     });
 
     if (!user) {
-      return res.status(401).send('Invalid token.');
+      return res.status(401).json({ error: 'Invalid token.' });
     }
 
     req.user = decoded;
   } catch (err) {
-    return res.status(401).send('Invalid Token.');
+    return res.status(401).json({ error: 'Invalid Token.' });
   }
 
   return next();

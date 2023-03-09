@@ -5,19 +5,20 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const User = require('../models/User');
+const { userAuth } = require('../middleware/auth');
 
 router.post('/register', async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(500).send('Missing data.');
+      return res.status(500).json({ error: 'Missing data.' });
     }
 
     const oldUser = await User.query().findById(email);
 
     if (oldUser) {
-      return res.status(500).send('User already exists.');
+      return res.status(500).json({ error: 'User already exists.' });
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -31,7 +32,7 @@ router.post('/register', async (req, res) => {
 
     return res.json(user);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -40,7 +41,7 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(500).send('Missing data.');
+      return res.status(500).json({ error: 'Missing data.' });
     }
 
     const user = await User.query().findById(email);
@@ -55,9 +56,31 @@ router.post('/login', async (req, res) => {
       return res.json(updatedUser);
     }
 
-    return res.status(400).send('Invalid Credentials.');
+    return res.status(500).json({ error: 'Invalid credentials.' });
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json(err);
+  }
+});
+
+router.post('/verify', userAuth, async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(500).json({ error: 'Missing data.' });
+    }
+
+    const user = await User.query().findOne({
+      token,
+    });
+
+    if (user) {
+      return res.json(user);
+    }
+
+    return res.status(500).json({ error: 'Invalid credentials.' });
+  } catch (err) {
+    return res.status(500).json(err);
   }
 });
 
