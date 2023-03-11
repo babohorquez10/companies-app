@@ -1,5 +1,15 @@
 # companies-app
 
+**Demo:** http://ec2-3-83-253-73.compute-1.amazonaws.com/
+
+**Credentials:** 
+
+**User:** Email: user@admin.test.com Password: user@admin.test.com
+
+**Admin:** Email: admin@admin.test.com Password: admin@admin.test.com
+
+## Run app locally:
+
 In this file you will find the instructions for running the project locally in your machine.
 
 ## DB creation:
